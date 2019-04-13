@@ -3,7 +3,8 @@ import {
     TextInput,
     View,
     StyleSheet,
-    Image
+    Image,
+    TouchableOpacity
 } from "react-native";
 import searchIcon from '../images/search.png';
 
@@ -20,8 +21,10 @@ const SearchComponent = (props) => {
                     alignItems:'center',
                     height:40
                 }}>
-                <Image source={searchIcon}
-                style={{width:40,height:40}}/>
+                <TouchableOpacity onPress={props.onSearchPress}>
+                    <Image source={searchIcon}
+                    style={{width:40,height:40}}/>
+                </TouchableOpacity>
             </View>
         </View>
     )

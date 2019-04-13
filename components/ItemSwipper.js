@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {View,StyleSheet,Text} from 'react-native';
+import {View,StyleSheet,Text,FlatList} from 'react-native';
 import Swiper from 'react-native-swiper';
 
 const ItemSwipper = (props) => {
@@ -11,7 +11,14 @@ const ItemSwipper = (props) => {
                     <Text style={styles.text}>Hello Swiper</Text>
                 </View>
                 <View style={styles.slide2}>
-                    <Text style={styles.text}>Beautiful</Text>
+                    <FlatList style={{flex:1}}
+                              numColumns={2}
+                                data={[{id:1},{id:2},{id:3},{id:4}]}
+                                renderItem={(item) =>
+                                    <View style={{height:50,borderWidth:1,margin:5}}>
+                                        <Text>Hi Hello!!</Text>
+                                    </View>
+                                } />
                 </View>
                 <View style={styles.slide2}>
                     <Text style={styles.text}>Beautiful 2</Text>

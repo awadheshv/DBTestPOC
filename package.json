@@ -10,7 +10,10 @@
     "lodash": "^4.17.11",
     "react": "16.8.3",
     "react-native": "0.59.3",
-    "react-native-swiper": "^1.5.14"
+    "react-native-gesture-handler": "^1.1.0",
+    "react-native-swiper": "^1.5.14",
+    "react-native-vector-icons": "^6.4.2",
+    "react-navigation": "^3.8.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",

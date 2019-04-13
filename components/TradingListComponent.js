@@ -5,7 +5,10 @@ import { View,
         StyleSheet,
         FlatList,
         Image,
-    TouchableOpacity
+    TouchableOpacity,
+    RefreshControl,
+    StatusBar,
+    ActionSheetIOS
  }  from 'react-native';
 import equityIcon from '../images/equityIcon.png';
 import bondIcon from '../images/bondIcon.png';
@@ -14,17 +17,28 @@ import minus from '../images/minus.jpeg';
 import ItemSwipper from './ItemSwipper';
 import SearchComponent from './SearchComponent';
 import _ from 'lodash';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 class TradingListComponent extends React.Component {
+    static navigationOptions = {
+        header: null,
+        title:'Trading',
+        tabBarIcon: <Ionicons name={`ios-home`} size={25}/>,
+        tabBarLabel: 'Trading'
+
+    };
 
     constructor(props){
         super(props);
         this.state = {
             expandedRecId:null,
-            searchText:''
+            searchText:'',
+            refreshing:false
         }
     }
 
     componentDidMount() {
+        StatusBar.setBarStyle("light-content");
+        this.setState({refreshing:true});
         setTimeout(()=>{
             const data = [];
             for(let i=1; i< 200; i++){
@@ -38,7 +52,8 @@ class TradingListComponent extends React.Component {
             }
 
             this.setState({
-                tradings:data
+                tradings:data,
+                refreshing:false
             })
         },1000);
     }
@@ -53,7 +68,6 @@ class TradingListComponent extends React.Component {
     }
 
     onSearchTextChanged = (text) => {
-        console.log(text);
         this.setState({searchText:text})
     }
 
@@ -116,7 +130,31 @@ class TradingListComponent extends React.Component {
         </View>
     }
 
+    _onRefresh = () => {
+        this.setState({refreshing:true});
+        setTimeout(()=>{
+            this.setState({refreshing:false});
+        },2000);
+    }
+
+    onActionsClicked = () => {
+        ActionSheetIOS.showActionSheetWithOptions(
+            {
+                options: ['Submit','Cancel', 'Remove'],
+                destructiveButtonIndex: 2,
+                cancelButtonIndex: 1,
+            },
+            (buttonIndex) => {
+                if (buttonIndex === 1) {
+                    this.props.navigation.navigate('Details');
+                }
+            },
+        );
+    }
+
     render(){
+
+//---------------
         let tradings = this.state.tradings ?
             this.state.tradings : [];
         if(this.state.searchText){
@@ -126,15 +164,25 @@ class TradingListComponent extends React.Component {
                return value;
             });
         }
+        //---------------
+
+
         return (
             <View style={styles.container}>
                 <View style={{height:40}}>
                     <SearchComponent
-                        onSearchTextChanged={this.onSearchTextChanged}/>
+                        onSearchTextChanged={this.onSearchTextChanged}
+                        onSearchPress={this.onActionsClicked}/>
                 </View>
                 <View style={{flex:1,paddingTop:15}}>
 
                     <FlatList
+                        refreshing={this.state.refreshing}
+                        refreshControl={<RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh}
+                            tintColor="#FFFFFF"
+                        />}
                         style={{flex:1}}
                         data={tradings}
                         keyExtractor={(item)=>item.recId}

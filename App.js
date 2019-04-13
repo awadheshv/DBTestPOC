@@ -8,12 +8,13 @@
 
 import React, {Component} from 'react';
 import TradingListComponent from './components/TradingListComponent';
+import RootNavigation from './components/RootNavigation';
 
 type Props = {};
 export default class App extends Component<Props> {
   render() {
     return (
-      <TradingListComponent />
+      <RootNavigation />
     );
   }
 }
